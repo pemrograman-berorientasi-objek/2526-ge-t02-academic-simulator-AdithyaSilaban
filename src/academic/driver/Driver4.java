@@ -14,16 +14,18 @@ import java.util.Scanner;
  *
  * Driver class untuk menyimulasikan kemampuan penyimpanan multiple entitas
  * (Course, Student, Enrollment) dan menerima input interaktif dari pengguna,
- * serta menampilkannya sesuai format dan URUTAN input yang diminta.
+ * serta menampilkannya sesuai format dan URUTAN GRUP (Course, Student, Enrollment) yang diminta.
  */
 public class Driver4 {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         
-        // Menggunakan satu List of Object untuk menyimpan semua entitas.
-        // Ini adalah kunci untuk memastikan urutan output sama dengan urutan input.
-        List<Object> academicEntities = new ArrayList<>();
+        // Menggunakan daftar terpisah untuk setiap tipe entitas.
+        // Ini memungkinkan pencetakan berurutan berdasarkan tipe (Course, Student, Enrollment).
+        List<Course> courses = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
+        List<Enrollment> enrollments = new ArrayList<>();
 
         String line;
         while (scanner.hasNextLine()) {
@@ -44,7 +46,7 @@ public class Driver4 {
                         int credits = Integer.parseInt(segments[3]);
                         String passingGrade = segments[4];
                         Course course = new Course(code, name, credits, passingGrade);
-                        academicEntities.add(course); // Tambahkan ke list tunggal
+                        courses.add(course); // Tambahkan ke daftar Course
                     } else {
                         System.err.println("Error: Format input tidak valid untuk course-add: " + line);
                     }
@@ -57,7 +59,7 @@ public class Driver4 {
                         int entranceYear = Integer.parseInt(segments[3]); // Mengubah String ke int
                         String major = segments[4];
                         Student student = new Student(id, name, entranceYear, major);
-                        academicEntities.add(student); // Tambahkan ke list tunggal
+                        students.add(student); // Tambahkan ke daftar Student
                     } else {
                         System.err.println("Error: Format input tidak valid untuk student-add: " + line);
                     }
@@ -70,7 +72,7 @@ public class Driver4 {
                         String academicYear = segments[3];
                         String semester = segments[4];
                         Enrollment enrollment = new Enrollment(courseCode, studentId, academicYear, semester);
-                        academicEntities.add(enrollment); // Tambahkan ke list tunggal
+                        enrollments.add(enrollment); // Tambahkan ke daftar Enrollment
                     } else {
                         System.err.println("Error: Format input tidak valid untuk enrollment-add: " + line);
                     }
@@ -82,11 +84,21 @@ public class Driver4 {
             }
         }
 
-        // Menampilkan semua entitas yang telah tersimpan.
-        // Karena disimpan dalam satu List<Object> secara berurutan,
-        // outputnya akan sama dengan urutan input.
-        for (Object entity : academicEntities) {
-            System.out.println(entity.toString());
+        // --- Bagian untuk menampilkan output sesuai urutan yang diinginkan ---
+
+        // 1. Menampilkan semua Course (sesuai urutan input Course)
+        for (Course course : courses) {
+            System.out.println(course.toString());
+        }
+
+        // 2. Menampilkan semua Student (sesuai urutan input Student)
+        for (Student student : students) {
+            System.out.println(student.toString());
+        }
+
+        // 3. Menampilkan semua Enrollment (sesuai urutan input Enrollment)
+        for (Enrollment enrollment : enrollments) {
+            System.out.println(enrollment.toString());
         }
 
         scanner.close(); // Tutup scanner
